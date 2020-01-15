@@ -68,7 +68,9 @@ The detections will be saved as `detections.mp4` file.
 ![alt text](https://github.com/heartkilla/yolo-v3/blob/master/data/detection_examples/detections.gif)
 
 ## To-Do List
+* Finish migration to full TF 2.0 (remove tf.compat.v1)
 * Model training
+* Tiny Yolo Configuration
 
 ## Acknowledgments
 * [Yolo v3 official paper](https://arxiv.org/abs/1804.02767)
