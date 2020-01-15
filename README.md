@@ -22,8 +22,11 @@ You can download the yolov3 weights by clicking [here](https://pjreddie.com/medi
 
 ### Using Custom trained weights
 Add your custom weights file to weights folder and your custom .names file into data/labels folder.
+
 Change 'n_classes=80' on line 97 of load_weights.py to 'n_classes=<number of classes in .names file>'.
+
 Change './weights/yolov3.weights' on line 107 of load_weights.py to './weights/<custom weights file>'.
+
 Change './data/labels/coco.names' on line 25 of detection.py to './data/labels/<custom names files>'.
   
 ### Save the weights in Tensorflow format
