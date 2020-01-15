@@ -12,10 +12,10 @@ _ANCHORS = [(10, 13), (16, 30), (33, 23),
 
 def batch_norm(inputs, training, data_format):
     """Performs a batch normalization using a standard set of parameters."""
-    return tf.layers.batch_normalization(
-        inputs=inputs, axis=1 if data_format == 'channels_first' else 3,
+    return tf.keras.layers.BatchNormalization(
+        axis=1 if data_format == 'channels_first' else 3,
         momentum=_BATCH_NORM_DECAY, epsilon=_BATCH_NORM_EPSILON,
-        scale=True, training=training)
+        scale=True, trainable=training)(inputs)
 
 
 def fixed_padding(inputs, kernel_size, data_format):
@@ -49,10 +49,10 @@ def conv2d_fixed_padding(inputs, filters, kernel_size, data_format, strides=1):
     if strides > 1:
         inputs = fixed_padding(inputs, kernel_size, data_format)
 
-    return tf.layers.conv2d(
-        inputs=inputs, filters=filters, kernel_size=kernel_size,
+    return tf.keras.layers.Conv2D(
+        filters=filters, kernel_size=kernel_size,
         strides=strides, padding=('SAME' if strides == 1 else 'VALID'),
-        use_bias=False, data_format=data_format)
+        use_bias=False, data_format=data_format)(inputs)
 
 
 def darknet53_residual_block(inputs, filters, training, data_format,
@@ -192,9 +192,9 @@ def yolo_layer(inputs, n_classes, anchors, img_size, data_format):
     """
     n_anchors = len(anchors)
 
-    inputs = tf.layers.conv2d(inputs, filters=n_anchors * (5 + n_classes),
+    inputs = tf.keras.layers.Conv2D(filters=n_anchors * (5 + n_classes),
                               kernel_size=1, strides=1, use_bias=True,
-                              data_format=data_format)
+                              data_format=data_format)(inputs)
 
     shape = inputs.get_shape().as_list()
     grid_shape = shape[2:4] if data_format == 'channels_first' else shape[1:3]
@@ -220,7 +220,7 @@ def yolo_layer(inputs, n_classes, anchors, img_size, data_format):
     box_centers = (box_centers + x_y_offset) * strides
 
     anchors = tf.tile(anchors, [grid_shape[0] * grid_shape[1], 1])
-    box_shapes = tf.exp(box_shapes) * tf.to_float(anchors)
+    box_shapes = tf.exp(box_shapes) * tf.cast(anchors, dtype=tf.float32)
 
     confidence = tf.nn.sigmoid(confidence)
 
@@ -242,7 +242,7 @@ def upsample(inputs, out_shape, data_format):
         new_height = out_shape[2]
         new_width = out_shape[1]
 
-    inputs = tf.image.resize_nearest_neighbor(inputs, (new_height, new_width))
+    inputs = tf.compat.v1.image.resize_nearest_neighbor(inputs, (new_height, new_width))
 
     if data_format == 'channels_first':
         inputs = tf.transpose(inputs, [0, 3, 1, 2])
@@ -286,7 +286,7 @@ def non_max_suppression(inputs, n_classes, max_output_size, iou_threshold,
     for boxes in batch:
         boxes = tf.boolean_mask(boxes, boxes[:, 4] > confidence_threshold)
         classes = tf.argmax(boxes[:, 5:], axis=-1)
-        classes = tf.expand_dims(tf.to_float(classes), axis=-1)
+        classes = tf.expand_dims(tf.cast(classes, dtype=tf.float32), axis=-1)
         boxes = tf.concat([boxes[:, :5], classes], axis=-1)
 
         boxes_dict = dict()
@@ -353,7 +353,7 @@ class Yolo_v3:
             A list containing class-to-boxes dictionaries
                 for each sample in the batch.
         """
-        with tf.variable_scope('yolo_v3_model'):
+        with tf.compat.v1.variable_scope('yolo_v3_model'):
             if self.data_format == 'channels_first':
                 inputs = tf.transpose(inputs, [0, 3, 1, 2])
 
