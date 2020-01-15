@@ -12,11 +12,13 @@ pip install -r requirements.txt
 ```
 
 ### Downloading official pretrained weights
-Let's download official weights pretrained on COCO dataset. 
+For Linux: Let's download official weights pretrained on COCO dataset. 
 
 ```
 wget -P weights https://pjreddie.com/media/files/yolov3.weights
 ```
+For Windows:
+You can download the yolov3 weights from [here](https://pjreddie.com/media/files/yolov3.weights)
 
 ### Save the weights in Tensorflow format
 Save the weights using `load_weights.py` script.
