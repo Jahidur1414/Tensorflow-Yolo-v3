@@ -32,7 +32,7 @@ Change './weights/yolov3.weights' on line 107 of load_weights.py to './weights/<
 Change './data/labels/coco.names' on line 25 of detection.py to './data/labels/<custom names files>'.
   
 ### Save the weights in Tensorflow format
-Save the weights using `load_weights.py` script.
+Load the weights using `load_weights.py` script. This will convert the yolov3 weights into TensorFlow .ckpt model files!
 
 ```
 python load_weights.py
