@@ -1,10 +1,10 @@
-# Yolo v3 Object Detection in Tensorflow
+# Yolo v3 Object Detection with Tensorflow 2.0
 Yolo v3 is an algorithm that uses deep convolutional neural networks to detect objects. <br> <br>
 
 ## Getting started
 
 ### Prerequisites
-This project is written in Python 3.6.6 using Tensorflow (deep learning), NumPy (numerical computing), Pillow (image processing), OpenCV (computer vision) and seaborn (visualization) packages.
+This project is written in Python 3.7 using Tensorflow 2.0 (deep learning), NumPy (numerical computing), Pillow (image processing), OpenCV (computer vision) and seaborn (visualization) packages.
 
 ```
 pip install -r requirements.txt
