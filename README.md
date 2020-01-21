@@ -38,10 +38,10 @@ python load_weights.py
 ```
 
 ## Running the model
-Now you can run the model using `detect.py` script. Don't forget to set the IoU (Intersection over Union) and confidence thresholds.
+You can run the model using `detect.py` script. The script works on images, video or your webcam. Don't forget to set the IoU (Intersection over Union) and confidence thresholds.
 ### Usage
 ```
-python detect.py <images/video> <iou threshold> <confidence threshold> <filenames>
+python detect.py <images/video/webcam> <iou threshold> <confidence threshold> <filenames>
 ```
 ### Images example
 Let's run an example using sample images.
@@ -66,6 +66,12 @@ python detect.py video 0.5 0.5 data/video/shinjuku.mp4
 ```
 The detections will be saved as `detections.mp4` file.
 ![alt text](https://github.com/heartkilla/yolo-v3/blob/master/data/detection_examples/detections.gif)
+### Webcam example
+The script can also be ran using your laptops webcam as the input. Example command shown below.
+```
+python detect.py webcam 0.5 0.5
+```
+The detections will be saved as 'detections.mp4' in the data/detections folder.
 
 ## To-Do List
 * Finish migration to full TF 2.0 (remove tf.compat.v1)
